@@ -1,4 +1,4 @@
-# RMSD Calculator
+# RMSF Calculator
 # Requirements: matplotlib.pyplot, MDtraj, numpy
 
 import mdtraj as md
@@ -16,7 +16,7 @@ sel = traj.topology.select('selection')
 sel_traj = traj.atom_slice(sel)
 
 # Calculate RMSD--using frame 0 as reference
-rmsd = md.rmsd(sel_traj, sel_traj, 0)
+rmsf = md.rmsf(sel_traj, sel_traj, 0)
 
 # Calculate Time
 steps = 30
@@ -28,7 +28,7 @@ time = np.linspace(0, steps * time_per_step_ns, frames)
 
 # Plot RMSD vs. Time
 plt.figure(figsize=(8, 4))
-plt.plot(time, rmsd, label="Series Title", color="red")
+plt.plot(time, rmsf, label="Series Title", color="red")
 plt.title("Graph Title")
 plt.xlabel("Time (ns)")
 plt.ylabel("RMSD (nm)")
