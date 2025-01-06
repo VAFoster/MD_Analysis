@@ -10,27 +10,22 @@ import numpy as np
 traj = md.load([f"/Path/to/traj/file/step7_{i}.xtc" for i in range(1, 10)], #replace range with # of .xtc files, add 1 to top range.
                top='/Path/to/input/topology/file/step5_input.psf') # .psf .pdb and other file types accepted
 
-# Select res for RMSD Calculations
+# Select res for RMSF Calculations
     # replace 'selection' with your res. ex. 'protein' 'POPC' 'protein or resname POPC'
 sel = traj.topology.select('selection')
 sel_traj = traj.atom_slice(sel)
 
-# Calculate RMSD--using frame 0 as reference
-rmsf = md.rmsf(sel_traj, sel_traj, 0)
+# Calculate RMSF
+rmsf = md.rmsf(sel_traj, sel_traj)
 
-# Calculate Time
-steps = 30
-time_per_step_ns = 1
-frames = traj.n_frames
+# Generate indicies
+residue_indices = [traj.topology.atom(i).residue.index for i in sel_traj]
 
-# Generate Time Array
-time = np.linspace(0, steps * time_per_step_ns, frames)
-
-# Plot RMSD vs. Time
+# Plot RMSF vs. Index
 plt.figure(figsize=(8, 4))
-plt.plot(time, rmsf, label="Series Title", color="red")
+plt.plot(residue_indices, rmsf, label="Series Title", color="red")
 plt.title("Graph Title")
-plt.xlabel("Time (ns)")
+plt.xlabel("Residue Index")
 plt.ylabel("RMSD (nm)")
 plt.legend()
 plt.show()
